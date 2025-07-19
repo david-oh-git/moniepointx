@@ -51,7 +51,7 @@ fun MoniepointXTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = poppinsTypography,
         content = content
     )
 }
