@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">moniepointX</string>
+    <string name="home">Home</string>
+    <string name="calculate">Calculate</string>
+    <string name="shipment">Shipment</string>
+    <string name="profile">Profile</string>
+    <string name="main_screen_bottom_nav_icon_desc">Bottom navigation icon</string>
 </resources>
