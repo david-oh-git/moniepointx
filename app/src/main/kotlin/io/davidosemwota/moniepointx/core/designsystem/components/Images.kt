@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,7 +46,9 @@ fun CircularIcon(
     @DrawableRes imageId: Int,
     modifier: Modifier = Modifier,
     size: Dp = 48.dp,
+    iconSize: Dp = 32.dp,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
+    tint: Color = LocalContentColor.current,
 ) {
     Box(
         modifier = modifier
@@ -57,8 +60,9 @@ fun CircularIcon(
         Icon(
             painter = painterResource(id = imageId),
             contentDescription = null,
+            tint = tint,
             modifier = Modifier
-                .size(32.dp)
+                .size(iconSize)
                 .align(Alignment.Center)
         )
 
