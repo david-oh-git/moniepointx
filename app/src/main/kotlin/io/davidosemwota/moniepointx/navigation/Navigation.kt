@@ -1,7 +1,12 @@
 package io.davidosemwota.moniepointx.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -12,6 +17,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,6 +34,7 @@ import io.davidosemwota.moniepointx.R
 import io.davidosemwota.moniepointx.features.calculate.CalculateScreen
 import io.davidosemwota.moniepointx.features.home.HomeScreen
 import io.davidosemwota.moniepointx.features.profile.ProfileScreen
+import io.davidosemwota.moniepointx.features.receiptsearch.ReceiptSearchScreen
 import io.davidosemwota.moniepointx.features.shipment.ShipmentScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -46,7 +53,7 @@ fun MoniePointNav(
             entry<BottomNavigationScreen.Home> {
                 HomeScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
-                    navigateToReceiptSearch = { },
+                    navigateToReceiptSearch = { backStack.add(ReceiptSearch) },
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -69,6 +76,12 @@ fun MoniePointNav(
                 ProfileScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
                     modifier = Modifier.fillMaxSize(),
+                )
+            }
+
+            entry<ReceiptSearch> {
+                ReceiptSearchScreen(
+                    onBackPressed = { backStack.removeLastOrNull() },
                 )
             }
         },
@@ -102,7 +115,6 @@ fun NavigationBottomNavigation(
     ) {
         screens.forEach { screen ->
             val selected = currentScreen == screen
-
             NavigationBarItem(
                 selected = selected,
                 onClick = {
@@ -110,19 +122,36 @@ fun NavigationBottomNavigation(
                 },
                 icon = {
 
-                    Icon(
-                        painter = painterResource(id = screen.iconId),
-                        contentDescription = stringResource(
-                            R.string.main_screen_bottom_nav_icon_desc
-                        ),
-                        tint = if (selected) MaterialTheme.colorScheme.primary
-                        else LocalContentColor.current,
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        if (selected) {
+                            Spacer(
+                                modifier = Modifier
+                                    .height(4.dp)
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                        }
+
+                        Icon(
+                            painter = painterResource(id = screen.iconId),
+                            contentDescription = stringResource(
+                                R.string.main_screen_bottom_nav_icon_desc
+                            ),
+                            tint = if (selected) MaterialTheme.colorScheme.primary
+                            else LocalContentColor.current,
+                        )
+                    }
+
                 },
                 label = { Text(text = stringResource(id = screen.title)) },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = Color.Transparent,
-                )
+                ),
             )
         }
     }
