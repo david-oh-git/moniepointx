@@ -97,13 +97,8 @@ fun MoniePointNav(
 @Composable
 fun NavigationBottomNavigation(
     backStack: NavBackStack,
+    screens: List<BottomNavigationScreen>,
     modifier: Modifier = Modifier,
-    screens: List<BottomNavigationScreen> = listOf(
-        BottomNavigationScreen.Home(),
-        BottomNavigationScreen.Calculate(),
-        BottomNavigationScreen.Shipment(),
-        BottomNavigationScreen.Profile(),
-    ),
 ) {
     val currentScreen = backStack.lastOrNull()
 

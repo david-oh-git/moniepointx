@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation3.runtime.NavBackStack
+import io.davidosemwota.moniepointx.navigation.BottomNavigationScreen
 import io.davidosemwota.moniepointx.navigation.MoniePointNav
 import io.davidosemwota.moniepointx.navigation.NavigationBottomNavigation
 
@@ -21,11 +22,18 @@ fun MoniePointXApp(
     backStack: NavBackStack,
     modifier: Modifier = Modifier,
 ) {
+    val bottomNavScreens = listOf(
+        BottomNavigationScreen.Home(),
+        BottomNavigationScreen.Calculate(),
+        BottomNavigationScreen.Shipment(),
+        BottomNavigationScreen.Profile(),
+    )
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
             AnimatedVisibility(
-                visible = true,
+                visible = bottomNavScreens.contains(backStack.lastOrNull()),
                 enter = slideInVertically(
                     initialOffsetY = { it },
                 ),
@@ -39,6 +47,7 @@ fun MoniePointXApp(
             ) {
                 NavigationBottomNavigation(
                     backStack = backStack,
+                    screens = bottomNavScreens,
                 )
             }
         },

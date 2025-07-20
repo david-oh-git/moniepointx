@@ -1,6 +1,7 @@
 package io.davidosemwota.moniepointx.features.home
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -220,6 +221,7 @@ fun HomeHeader(
             },
             readOnly = true,
             onClick = {
+                Log.d("xxx","CLICKED")
                 onAction(HomeAction.NavigateToReceiptSearch)
             },
         )

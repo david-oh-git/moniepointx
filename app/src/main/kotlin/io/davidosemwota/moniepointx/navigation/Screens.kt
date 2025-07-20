@@ -35,6 +35,9 @@ sealed interface BottomNavigationScreen : NavKey {
 
 }
 
+@Serializable
+data object ReceiptSearch : NavKey
+
 @get:DrawableRes
 val BottomNavigationScreen.iconId: Int
     get() = when (this) {
