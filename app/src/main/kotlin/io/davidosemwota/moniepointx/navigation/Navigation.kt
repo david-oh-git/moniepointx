@@ -46,6 +46,7 @@ fun MoniePointNav(
             entry<BottomNavigationScreen.Home> {
                 HomeScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
+                    navigateToReceiptSearch = { },
                     modifier = Modifier.fillMaxSize(),
                 )
             }

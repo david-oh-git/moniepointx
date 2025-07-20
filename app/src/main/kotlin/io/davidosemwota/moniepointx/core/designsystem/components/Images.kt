@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.davidosemwota.moniepointx.core.designsystem.MoniePointOrange
 
 @Composable
 fun CircularImage(
@@ -34,9 +35,34 @@ fun CircularImage(
     ) {
         Image(
             painter = painterResource(id = resId),
-            contentDescription = null,
+            contentDescription = "Circular Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier.matchParentSize()
+        )
+    }
+}
+
+@Composable
+fun CircularImageTint(
+    @DrawableRes resId: Int,
+    modifier: Modifier = Modifier,
+    size: Dp = 48.dp,
+    tint: Color = MoniePointOrange,
+) {
+    Box(
+        modifier = modifier
+            .size(size)
+            .clip(CircleShape)
+            .border(2.dp, Color.Transparent, CircleShape)
+            .background(tint)
+    ) {
+        Image(
+            painter = painterResource(id = resId),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(24.dp)
+                .align(Alignment.Center),
         )
     }
 }
