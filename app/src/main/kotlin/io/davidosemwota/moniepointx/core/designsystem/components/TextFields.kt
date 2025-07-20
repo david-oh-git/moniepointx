@@ -66,8 +66,11 @@ internal fun SearchTextField(
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
             .pointerInteropFilter {
-                onClick()
-                true
+                if (readOnly) {
+                    onClick()
+                    true
+                }
+                false
             }
     )
 
