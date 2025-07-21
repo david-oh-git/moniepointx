@@ -11,3 +11,9 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val MoniePointOrange = Color(0xFFF69656)
+
+val MoniePointInProgress = Color(0xFF1DAB19)
+val MoniePointInPending = Color(0xFFB87333)
+val MoniePointInLoading = Color(0xFF5086EF)
+val MoniePointInCompleted = Color(0xFFCE93D8)
+

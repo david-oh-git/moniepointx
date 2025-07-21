@@ -35,7 +35,7 @@ import io.davidosemwota.moniepointx.features.calculate.CalculateScreen
 import io.davidosemwota.moniepointx.features.home.HomeScreen
 import io.davidosemwota.moniepointx.features.profile.ProfileScreen
 import io.davidosemwota.moniepointx.features.receiptsearch.ReceiptSearchScreen
-import io.davidosemwota.moniepointx.features.shipment.ShipmentScreen
+import io.davidosemwota.moniepointx.features.shipmenthistory.ShipmentHistoryScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -65,8 +65,8 @@ fun MoniePointNav(
                 )
             }
 
-            entry<BottomNavigationScreen.Shipment> {
-                ShipmentScreen(
+            entry<BottomNavigationScreen.ShipmentHistory> {
+                ShipmentHistoryScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
                     modifier = Modifier.fillMaxSize(),
                 )
@@ -84,6 +84,7 @@ fun MoniePointNav(
                     onBackPressed = { backStack.removeLastOrNull() },
                 )
             }
+
         },
         entryDecorators = listOf(
             rememberSceneSetupNavEntryDecorator(),

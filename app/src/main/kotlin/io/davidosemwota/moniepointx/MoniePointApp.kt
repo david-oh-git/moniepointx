@@ -25,7 +25,7 @@ fun MoniePointXApp(
     val bottomNavScreens = listOf(
         BottomNavigationScreen.Home(),
         BottomNavigationScreen.Calculate(),
-        BottomNavigationScreen.Shipment(),
+        BottomNavigationScreen.ShipmentHistory(),
         BottomNavigationScreen.Profile(),
     )
 
@@ -33,7 +33,8 @@ fun MoniePointXApp(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
             AnimatedVisibility(
-                visible = bottomNavScreens.contains(backStack.lastOrNull()),
+                visible = bottomNavScreens.contains(backStack.lastOrNull())
+                        && backStack.lastOrNull() != BottomNavigationScreen.ShipmentHistory(),
                 enter = slideInVertically(
                     initialOffsetY = { it },
                 ),

@@ -23,7 +23,7 @@ sealed interface BottomNavigationScreen : NavKey {
     ) : BottomNavigationScreen
 
     @Serializable
-    data class Shipment(
+    data class ShipmentHistory(
         @StringRes override val title: Int = R.string.shipment,
     ) : BottomNavigationScreen
 
@@ -43,7 +43,7 @@ val BottomNavigationScreen.iconId: Int
     get() = when (this) {
         BottomNavigationScreen.Home() -> R.drawable.ic_home
         BottomNavigationScreen.Calculate() -> R.drawable.calculate
-        BottomNavigationScreen.Shipment() -> R.drawable.history
+        BottomNavigationScreen.ShipmentHistory() -> R.drawable.history
         BottomNavigationScreen.Profile() -> R.drawable.person
         else -> R.drawable.ic_home
     }

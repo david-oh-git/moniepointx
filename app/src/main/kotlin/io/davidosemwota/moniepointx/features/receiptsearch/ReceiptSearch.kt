@@ -68,7 +68,7 @@ fun ReceiptSearchScreen(
     ReceiptSearchScreenContent(
         state = state,
         onAction = viewModel::sendAction,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
     )
 
 }

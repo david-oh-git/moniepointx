@@ -5,4 +5,16 @@
     <string name="shipment">Shipment</string>
     <string name="profile">Profile</string>
     <string name="main_screen_bottom_nav_icon_desc">Bottom navigation icon</string>
+    <string name="in_progress">in-progress</string>
+    <string name="pending">pending</string>
+    <string name="loading">loading</string>
+    <string name="completed">completed</string>
+    <string name="cancelled">cancelled</string>
+    <string name="pending_order">pending order</string>
+    <string name="completed_tab">Completed</string>
+    <string name="all_tab">All</string>
+    <string name="in_progress_tab">In progress</string>
+    <string name="pending_tab">Pending</string>
+    <string name="loading_tab">Loading</string>
+    <string name="cancelled_tab">Cancelled</string>
 </resources>
