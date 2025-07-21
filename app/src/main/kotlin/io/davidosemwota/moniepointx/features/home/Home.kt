@@ -17,20 +17,25 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +52,7 @@ import io.davidosemwota.moniepointx.core.designsystem.components.CircularImageTi
 import io.davidosemwota.moniepointx.core.designsystem.components.CustomSpacer
 import io.davidosemwota.moniepointx.core.designsystem.components.Dot
 import io.davidosemwota.moniepointx.core.designsystem.components.GeneralPreview
+import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointHorizontalDivider
 import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointXCard
 import io.davidosemwota.moniepointx.core.designsystem.components.PreviewComposable
 import io.davidosemwota.moniepointx.core.designsystem.components.SearchTextField
@@ -63,6 +69,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackBarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.action.collect { action ->
@@ -87,13 +96,37 @@ fun HomeScreen(
         window.statusBarColor = color.toArgb()
     }
 
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        topBar = {
+            HomeHeader(
+                location = state.location,
+                receiptNumber = state.receiptNumber,
+                onAction = viewModel::sendAction,
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+    ) { innerPadding ->
+
+        HomeScreenContent(
+            state = state,
+            onAction = viewModel::sendAction,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        )
+    }
+
     HomeScreenContent(
         state = state,
         onAction = viewModel::sendAction,
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
     )
+
+
 
 }
 
@@ -274,7 +307,9 @@ internal fun VehicleInfo(
     modifier: Modifier = Modifier,
 ) {
 
-    MoniePointXCard {
+    MoniePointXCard(
+        elevation = 0.dp,
+    ) {
         Column(
             modifier = modifier,
         ) {
@@ -342,7 +377,7 @@ fun TrackingInfo(
         Spacer16()
 
         MoniePointXCard(
-            elevation = 4.dp,
+            elevation = 0.dp,
             modifier = Modifier
                 .fillMaxWidth()
         ) {
@@ -383,7 +418,7 @@ fun TrackingInfo(
 
                 Spacer16()
 
-                HorizontalDivider(thickness = 1.dp)
+                MoniePointHorizontalDivider()
 
                 Row(
                     modifier = Modifier
@@ -468,7 +503,7 @@ fun TrackingInfo(
 
                 Spacer16()
 
-                HorizontalDivider(thickness = 1.dp)
+                MoniePointHorizontalDivider()
 
                 TextButton(
                     onClick = { /* Handle button click */ },

@@ -16,9 +16,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,6 +38,7 @@ import io.davidosemwota.moniepointx.R
 import io.davidosemwota.moniepointx.core.designsystem.components.CircularImageTint
 import io.davidosemwota.moniepointx.core.designsystem.components.Dot
 import io.davidosemwota.moniepointx.core.designsystem.components.GeneralPreview
+import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointHorizontalDivider
 import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointXCard
 import io.davidosemwota.moniepointx.core.designsystem.components.PreviewComposable
 import io.davidosemwota.moniepointx.core.designsystem.components.SearchTextField
@@ -65,11 +67,26 @@ fun ReceiptSearchScreen(
         }
     }
 
-    ReceiptSearchScreenContent(
-        state = state,
-        onAction = viewModel::sendAction,
+    Scaffold(
         modifier = modifier.fillMaxSize(),
-    )
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        topBar = {
+            Header(
+                onAction = viewModel::sendAction,
+                searchQuery = state.searchQuery
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+    ) { innerPadding ->
+
+        ReceiptSearchScreenContent(
+            state = state,
+            onAction = viewModel::sendAction,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+        )
+    }
 
 }
 
@@ -87,11 +104,6 @@ fun ReceiptSearchScreenContent(
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-        Header(
-            onAction = onAction,
-            searchQuery = state.searchQuery
-        )
-
         Receipts(
             receipts = state.filteredReceipts,
         )
@@ -157,7 +169,7 @@ internal fun Receipts(
     modifier: Modifier = Modifier,
 ) {
     MoniePointXCard(
-        elevation = 4.dp,
+        elevation = 0.dp,
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -174,7 +186,7 @@ internal fun Receipts(
                         .fillMaxWidth()
                 )
                 if (index != receipts.lastIndex) {
-                    HorizontalDivider(thickness = 2.dp)
+                    MoniePointHorizontalDivider()
                 }
             }
 

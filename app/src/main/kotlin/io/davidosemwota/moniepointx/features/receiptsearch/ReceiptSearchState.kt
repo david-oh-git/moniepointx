@@ -44,7 +44,8 @@ data class ReceiptSearchState(
             receipts
         } else {
             receipts.filter {
-                it.receiptNumber.contains(searchQuery, ignoreCase = true)
+                it.receiptNumber.contains(searchQuery, ignoreCase = true) ||
+                        it.itemName.contains(searchQuery, ignoreCase = true)
             }
         }
 }

@@ -17,13 +17,6 @@ import java.util.Calendar
 data class ShipmentHistoryState(
     val isLoading: Boolean = false,
     val selectedTabIndex: Int = 0,
-    val tabs: List<HistoryTab> = listOf(
-        HistoryTab.All(),
-        HistoryTab.Completed(),
-        HistoryTab.InProgress(),
-        HistoryTab.Pending(),
-        HistoryTab.Loading(),
-    ),
     val shipments: List<Shipment> = listOf(
         Shipment(
             id = 1,
@@ -125,15 +118,17 @@ data class ShipmentHistoryState(
     ),
 ) {
 
-    val tabShipment: List<Shipment>
-        get() = when(tabs[selectedTabIndex]) {
-            is HistoryTab.All -> shipments
-            is HistoryTab.Cancelled -> shipments.filter { it.status == Status.CANCELLED }
-            is HistoryTab.Completed -> shipments.filter { it.status == Status.COMPLETED }
-            is HistoryTab.InProgress -> shipments.filter { it.status == Status.IN_PROGRESS }
-            is HistoryTab.Loading -> shipments.filter { it.status == Status.LOADING }
-            is HistoryTab.Pending -> shipments.filter { it.status == Status.PENDING }
-        }
+    val tabs: List<HistoryTab> = listOf(
+        HistoryTab.All(shipments = shipments),
+        HistoryTab.Completed(shipments = shipments.filter { it.status == Status.COMPLETED }),
+        HistoryTab.InProgress(shipments = shipments.filter { it.status == Status.IN_PROGRESS }),
+        HistoryTab.Pending(shipments = shipments.filter { it.status == Status.PENDING }),
+        HistoryTab.Cancelled(shipments = shipments.filter { it.status == Status.CANCELLED }),
+        HistoryTab.Loading(shipments = shipments.filter { it.status == Status.LOADING }),
+    )
+
+    val currentTab: HistoryTab
+        get() = tabs[selectedTabIndex]
 }
 
 data class Shipment(

@@ -118,11 +118,14 @@ fun ShipmentHistoryScreenContent(
         Text(
             text = "Shipments",
             style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier
+                .fillMaxWidth(),
         )
 
         Spacer16()
 
-        for (shipment in state.tabShipment) {
+        for (shipment in state.currentTab.shipments) {
             ShipmentItem(
                 shipment = shipment,
                 modifier = Modifier
@@ -140,7 +143,7 @@ internal fun ShipmentItem(
     modifier: Modifier = Modifier,
 ) {
     MoniePointXCard(
-        elevation = 4.dp,
+        elevation = 0.dp,
         modifier = modifier,
     ) {
         Row(
@@ -304,6 +307,9 @@ internal fun Header(
                     .fillMaxWidth(),
             ) {
                 state.tabs.forEachIndexed { index, tab ->
+                    val isSelected = state.selectedTabIndex == index
+                    val pillColour = if (isSelected) MoniePointOrange else
+                        MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.3f)
                     Tab(
                         text = {
 
@@ -314,7 +320,18 @@ internal fun Header(
                                     text = stringResource(tab.nameId),
                                     style = MaterialTheme.typography.titleMedium
                                 )
-                                Spacer(modifier = Modifier.width(2.dp))
+                                Spacer(modifier = Modifier.width(4.dp))
+
+                                MoniePointPill(
+                                    colour = pillColour,
+                                ) {
+                                    Text(
+                                        text = state.tabs[index].shipments.size.toString(),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                    )
+                                }
                             }
 
                         },
