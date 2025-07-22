@@ -1,5 +1,9 @@
 package io.davidosemwota.moniepointx.features.receiptsearch
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,12 +48,14 @@ import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointXCard
 import io.davidosemwota.moniepointx.core.designsystem.components.PreviewComposable
 import io.davidosemwota.moniepointx.core.designsystem.components.SearchTextField
 import io.davidosemwota.moniepointx.core.designsystem.components.Spacer16
+import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun ReceiptSearchScreen(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope,
     viewModel: ReceiptSearchViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -168,6 +175,18 @@ internal fun Receipts(
     receipts: List<Receipt>,
     modifier: Modifier = Modifier,
 ) {
+    val scope = rememberCoroutineScope()
+    val itemCount = receipts.size
+    val delays = List(itemCount) { index -> index * 5L }
+    val animStates = remember { List(itemCount) { Animatable(300f) } }
+
+    LaunchedEffect(Unit) {
+        animStates.forEachIndexed { index, anim ->
+            delay(delays[index])
+            anim.animateTo(0f, animationSpec = tween(200))
+        }
+    }
+
     MoniePointXCard(
         elevation = 0.dp,
         modifier = modifier
@@ -183,6 +202,7 @@ internal fun Receipts(
                 ReceiptItem(
                     receipt = receipt,
                     modifier = Modifier
+                        .offset(y = animStates[index].value.dp)
                         .fillMaxWidth()
                 )
                 if (index != receipts.lastIndex) {

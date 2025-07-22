@@ -1,6 +1,13 @@
 package io.davidosemwota.moniepointx.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,62 +52,88 @@ fun MoniePointNav(
     modifier: Modifier = Modifier,
 ) {
 
-    NavDisplay(
-        modifier = modifier.fillMaxSize(),
-        backStack = backStack,
-        onBack = { backStack.removeLastOrNull() },
-        entryProvider = entryProvider {
+    SharedTransitionLayout {
+        NavDisplay(
+            modifier = modifier.fillMaxSize(),
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
+            entryProvider = entryProvider {
 
-            entry<BottomNavigationScreen.Home> {
-                HomeScreen(
-                    onBackPressed = { backStack.removeLastOrNull() },
-                    navigateToReceiptSearch = { backStack.add(ReceiptSearch) },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
+                entry<BottomNavigationScreen.Home> {
+                    HomeScreen(
+                        onBackPressed = { backStack.removeLastOrNull() },
+                        navigateToReceiptSearch = { backStack.add(ReceiptSearch) },
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
 
-            entry<BottomNavigationScreen.Calculate> {
-                CalculateScreen(
-                    onBackPressed = { backStack.removeLastOrNull() },
-                    navigateToEstimatedAmount = { backStack.add(EstimatedAmount) },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
+                entry<BottomNavigationScreen.Calculate> {
+                    CalculateScreen(
+                        onBackPressed = { backStack.removeLastOrNull() },
+                        navigateToEstimatedAmount = { backStack.add(EstimatedAmount) },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
 
-            entry<BottomNavigationScreen.ShipmentHistory> {
-                ShipmentHistoryScreen(
-                    onBackPressed = { backStack.removeLastOrNull() },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
+                entry<BottomNavigationScreen.ShipmentHistory> {
+                    ShipmentHistoryScreen(
+                        onBackPressed = { backStack.removeLastOrNull() },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
 
-            entry<BottomNavigationScreen.Profile> {
-                ProfileScreen(
-                    onBackPressed = { backStack.removeLastOrNull() },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
+                entry<BottomNavigationScreen.Profile> {
+                    ProfileScreen(
+                        onBackPressed = { backStack.removeLastOrNull() },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
 
-            entry<ReceiptSearch> {
-                ReceiptSearchScreen(
-                    onBackPressed = { backStack.removeLastOrNull() },
-                )
-            }
+                entry<ReceiptSearch> {
+                    ReceiptSearchScreen(
+                        onBackPressed = { backStack.removeLastOrNull() },
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                    )
+                }
 
-            entry<EstimatedAmount> {
-                EstimatedAmountScreen(
-                    onBackPressed = { backStack.removeLastOrNull() },
-                    navigateToHome = { backStack.add(BottomNavigationScreen.Home())}
-                )
-            }
+                entry<EstimatedAmount>(
+                    metadata = NavDisplay.transitionSpec {
+                        slideInVertically(
+                            initialOffsetY = { it },
+                            animationSpec = tween(200)
+                        ) togetherWith ExitTransition.KeepUntilTransitionsFinished
+                    } + NavDisplay.popTransitionSpec {
+                        EnterTransition.None togetherWith
+                                slideOutVertically(
+                                    targetOffsetY = { it },
+                                    animationSpec = tween(1000)
+                                )
+                    } + NavDisplay.predictivePopTransitionSpec {
+                        EnterTransition.None togetherWith
+                                slideOutVertically(
+                                    targetOffsetY = { it },
+                                    animationSpec = tween(1000)
+                                )
+                    }
+                ) {
 
-        },
-        entryDecorators = listOf(
-            rememberSceneSetupNavEntryDecorator(),
-            rememberSavedStateNavEntryDecorator(),
+                    EstimatedAmountScreen(
+                        onBackPressed = { backStack.removeLastOrNull() },
+                        navigateToHome = { backStack.add(BottomNavigationScreen.Home())}
+                    )
+                }
+
+            },
+            entryDecorators = listOf(
+                rememberSceneSetupNavEntryDecorator(),
+                rememberSavedStateNavEntryDecorator(),
 //            rememberViewModelStoreNavEntryDecorator(),
-        ),
-    )
+            ),
+        )
+    }
+
+
 }
 
 

@@ -1,6 +1,12 @@
 package io.davidosemwota.moniepointx.features.home
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -19,8 +25,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -60,11 +64,12 @@ import io.davidosemwota.moniepointx.core.designsystem.components.Spacer16
 import io.davidosemwota.moniepointx.core.designsystem.components.Spacer4
 import io.davidosemwota.moniepointx.core.designsystem.components.Spacer8
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreen(
     onBackPressed: () -> Unit,
     navigateToReceiptSearch: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -96,27 +101,7 @@ fun HomeScreen(
         window.statusBarColor = color.toArgb()
     }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(snackBarHostState) },
-        topBar = {
-            HomeHeader(
-                location = state.location,
-                receiptNumber = state.receiptNumber,
-                onAction = viewModel::sendAction,
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-    ) { innerPadding ->
 
-        HomeScreenContent(
-            state = state,
-            onAction = viewModel::sendAction,
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        )
-    }
 
     HomeScreenContent(
         state = state,
@@ -127,9 +112,9 @@ fun HomeScreen(
     )
 
 
-
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreenContent(
     state: HomeState,
@@ -165,14 +150,27 @@ fun HomeScreenContent(
 
         CustomSpacer(32.dp)
 
-        AvailableVehicles(
-            vehicles = state.vehicles,
-        )
+        AnimatedVisibility(
+            visible = true,
+            enter = slideInHorizontally(
+                initialOffsetX = { -it }, // Slide in from left
+                animationSpec = tween(durationMillis = 500)
+            ),
+            exit = slideOutHorizontally(
+                targetOffsetX = { -it }, // Slide out to left
+                animationSpec = tween(durationMillis = 300)
+            )
+        ) {
+            AvailableVehicles(
+                vehicles = state.vehicles,
+            )
+        }
 
     }
 
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeHeader(
     location: String,
@@ -255,6 +253,8 @@ fun HomeHeader(
             onClick = {
                 onAction(HomeAction.NavigateToReceiptSearch)
             },
+            modifier = Modifier
+
         )
 
         Spacer16()
