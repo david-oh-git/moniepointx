@@ -72,7 +72,7 @@ fun EstimatedAmountScreen(
     // Start animation on first composition
     LaunchedEffect(Unit) {
         for (i in 1000..1400) {
-            viewModel.onAmountChanged(1400)
+            viewModel.onAmountChanged(i)
             delay(2L) // adjust speed here (lower = faster)
         }
     }
