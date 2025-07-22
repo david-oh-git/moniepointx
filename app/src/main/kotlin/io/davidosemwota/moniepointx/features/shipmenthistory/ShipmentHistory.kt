@@ -91,10 +91,11 @@ fun ShipmentHistoryScreen(
         ShipmentHistoryScreenContent(
             state = state,
             onAction = viewModel::sendAction,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
         )
     }
-
 
 }
 
