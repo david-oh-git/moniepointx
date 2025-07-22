@@ -42,7 +42,6 @@ import io.davidosemwota.moniepointx.core.designsystem.components.GeneralPreview
 import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointAppBar
 import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointButton
 import io.davidosemwota.moniepointx.core.designsystem.components.PreviewComposable
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,10 +70,11 @@ fun EstimatedAmountScreen(
 
     // Start animation on first composition
     LaunchedEffect(Unit) {
-        for (i in 1000..1400) {
-            viewModel.onAmountChanged(i)
-            delay(2L) // adjust speed here (lower = faster)
-        }
+//        for (i in 1001..1400) {
+//            viewModel.onAmountChanged(i)
+//            delay(2L)
+//        }
+        viewModel.animateAmount()
     }
 
     Scaffold(
@@ -121,7 +121,7 @@ fun EstimatedAmountScreenContent(
 
     val animatedValue by animateIntAsState(
         targetValue = state.amount,
-        animationSpec = tween(durationMillis = 1500), // quick animation
+        animationSpec = tween(durationMillis = 1350),
         label = "Animated Counter"
     )
 

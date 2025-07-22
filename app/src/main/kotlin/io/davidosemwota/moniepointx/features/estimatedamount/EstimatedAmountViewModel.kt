@@ -3,6 +3,7 @@ package io.davidosemwota.moniepointx.features.estimatedamount
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -34,6 +35,16 @@ class EstimatedAmountViewModel @Inject constructor() : ViewModel() {
 
     fun onAmountChanged(amount: Int) {
         _state.value = _state.value.copy(amount = amount)
+    }
+
+    fun animateAmount() {
+        viewModelScope.launch {
+            val state = _state.value
+            for (i in 1001 .. 1400) {
+                _state.value = state.copy(amount = i)
+                delay(2L) // adjust for speed
+            }
+        }
     }
 
 }
