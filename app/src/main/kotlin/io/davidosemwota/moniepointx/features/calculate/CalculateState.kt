@@ -12,4 +12,13 @@ data class CalculateState(
         "Box", "Envelope", "Crate"
     ),
     val selectedPackageOption: String = "",
+    val categories: List<String> = listOf(
+        "Documents",
+        "Glass",
+        "Liquid",
+        "Food",
+        "Electronic",
+        "Product",
+        "Others"
+    ),
 )

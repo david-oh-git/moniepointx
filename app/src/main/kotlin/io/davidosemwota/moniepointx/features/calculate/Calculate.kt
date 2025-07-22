@@ -1,7 +1,9 @@
 package io.davidosemwota.moniepointx.features.calculate
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,6 +38,8 @@ import io.davidosemwota.moniepointx.core.designsystem.components.CalculateDropDo
 import io.davidosemwota.moniepointx.core.designsystem.components.CalculateTextField
 import io.davidosemwota.moniepointx.core.designsystem.components.GeneralPreview
 import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointAppBar
+import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointButton
+import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointSelectButton
 import io.davidosemwota.moniepointx.core.designsystem.components.MoniePointXCard
 import io.davidosemwota.moniepointx.core.designsystem.components.PreviewComposable
 import io.davidosemwota.moniepointx.core.designsystem.components.Spacer16
@@ -45,6 +48,7 @@ import io.davidosemwota.moniepointx.core.designsystem.components.Spacer16
 @Composable
 fun CalculateScreen(
     onBackPressed: () -> Unit,
+    navigateToEstimatedAmount: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CalculateViewModel = hiltViewModel()
 ) {
@@ -59,6 +63,7 @@ fun CalculateScreen(
             onAction(
                 action = action,
                 onNavigateBack = onBackPressed,
+                navigateToEstimatedAmount = navigateToEstimatedAmount,
                 viewModel = viewModel,
             )
         }
@@ -92,10 +97,21 @@ fun CalculateScreen(
                 windowInsets = WindowInsets(
                     top = 0.dp,
                     bottom = 0.dp
-                )
+                ),
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        bottomBar = {
+            MoniePointButton(
+                onClick = {
+                    viewModel.sendAction(CalculateAction.NavigateToEstimatedAmount)
+                },
+                text = "Calculate",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+        }
     ) { innerPadding ->
 
         CalculateScreenContent(
@@ -176,7 +192,6 @@ fun CalculateScreenContent(
                     },
                     iconId = R.drawable.scale,
                     iconSIze = 28.dp,
-                    keyboardType = KeyboardType.Number,
                     modifier = Modifier
                         .fillMaxWidth(),
                 )
@@ -214,6 +229,45 @@ fun CalculateScreenContent(
                 onAction(CalculateAction.PackageOptionSelected(it))
             },
         )
+
+        Spacer16()
+
+        Text(
+            text = "Categories",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier
+                .fillMaxWidth(),
+        )
+        Text(
+            text = "What are you sending ?",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraLight,
+            color = MaterialTheme.colorScheme.outline,
+            modifier = Modifier
+                .fillMaxWidth(),
+        )
+
+        Spacer16()
+
+        FlowRow(
+            verticalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            itemVerticalAlignment = Alignment.CenterVertically,
+            maxLines = 2,
+            modifier = Modifier
+                .fillMaxWidth(),
+        ) {
+            state.categories.forEach { category ->
+                MoniePointSelectButton(
+                    onClick = { },
+                    text = category,
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                )
+            }
+        }
+
     }
 
 }

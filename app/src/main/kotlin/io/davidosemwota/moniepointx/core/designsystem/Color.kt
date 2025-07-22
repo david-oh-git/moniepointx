@@ -19,3 +19,7 @@ val MoniePointInCompleted = Color(0xFFCE93D8)
 
 val MoniePointDividerColor = Color(0xFFA1A0A1)
 
+val MoniePointGreen = Color(0xFF00C853)
+
+
+

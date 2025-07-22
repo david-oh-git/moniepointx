@@ -32,6 +32,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import io.davidosemwota.moniepointx.R
 import io.davidosemwota.moniepointx.features.calculate.CalculateScreen
+import io.davidosemwota.moniepointx.features.estimatedamount.EstimatedAmountScreen
 import io.davidosemwota.moniepointx.features.home.HomeScreen
 import io.davidosemwota.moniepointx.features.profile.ProfileScreen
 import io.davidosemwota.moniepointx.features.receiptsearch.ReceiptSearchScreen
@@ -61,6 +62,7 @@ fun MoniePointNav(
             entry<BottomNavigationScreen.Calculate> {
                 CalculateScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
+                    navigateToEstimatedAmount = { backStack.add(EstimatedAmount) },
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -82,6 +84,13 @@ fun MoniePointNav(
             entry<ReceiptSearch> {
                 ReceiptSearchScreen(
                     onBackPressed = { backStack.removeLastOrNull() },
+                )
+            }
+
+            entry<EstimatedAmount> {
+                EstimatedAmountScreen(
+                    onBackPressed = { backStack.removeLastOrNull() },
+                    navigateToHome = { backStack.add(BottomNavigationScreen.Home())}
                 )
             }
 

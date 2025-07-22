@@ -100,7 +100,7 @@ internal fun CalculateTextField(
     onValueChange: (String) -> Unit,
     @DrawableRes iconId: Int,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.titleLarge,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     iconSIze: Dp = 32.dp,
     keyboardType: KeyboardType = KeyboardType.Text,
 ) {
@@ -121,6 +121,7 @@ internal fun CalculateTextField(
             Icon(
                 painter = painterResource(iconId),
                 contentDescription = "Icon",
+                tint = MaterialTheme.colorScheme.outline,
                 modifier = Modifier
                     .size(iconSIze)
             )
@@ -137,7 +138,8 @@ internal fun CalculateTextField(
                 placeholder = {
                     Text(
                         text = hint,
-                        style = textStyle,
+                        style = textStyle.copy(fontWeight = FontWeight.Normal),
+                        color = MaterialTheme.colorScheme.outline,
                     )
                 },
                 colors = TextFieldDefaults.colors(
